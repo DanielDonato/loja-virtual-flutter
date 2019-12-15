@@ -29,8 +29,22 @@ class UserModel extends Model {
     });
   }
 
-  void signIn() {
-
+  void signIn({@required String email, @required String pass,
+    @required VoidCallback onSuccess, @required VoidCallback onFail}) async {
+    isLoading = true;
+    notifyListeners();
+    _auth.signInWithEmailAndPassword(email: email, password: pass)
+      .then((user) async {
+        firebaseUser = user;
+        await _loadCurrentUser();
+        onSuccess();
+        isLoading = false;
+        notifyListeners();
+    }).catchError((e){
+      onFail();
+      isLoading = false;
+      notifyListeners();
+    });
   }
 
   void signOut() async {
@@ -52,6 +66,26 @@ class UserModel extends Model {
 
   bool isLoggedIn() {
     return firebaseUser != null;
+  }
+
+  Future<Null> _loadCurrentUser() async {
+    if(firebaseUser == null) {
+      firebaseUser = await _auth.currentUser();
+    }
+    if(firebaseUser != null) {
+      if(userData["name"] == null) {
+        DocumentSnapshot docUser = await Firestore.instance.collection("users")
+            .document(firebaseUser.uid).get();
+        userData = docUser.data;
+      }
+    }
+    notifyListeners();
+  }
+
+  @override
+  void addListener(listener) {
+    super.addListener(listener);
+    _loadCurrentUser();
   }
 }
 

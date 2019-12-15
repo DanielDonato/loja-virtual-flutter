@@ -77,7 +77,7 @@ class CustomDrawer extends StatelessWidget {
                                             builder: (context) => LoginScreen())
                                     );
                                   }else {
-
+                                    model.signOut();
                                   }
                                 },
                               )
