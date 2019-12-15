@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lojavirtual/screens/card_screen.dart';
+import 'package:lojavirtual/screens/cart_screen.dart';
 
 class CartButton extends StatelessWidget {
   @override
