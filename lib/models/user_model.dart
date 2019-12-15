@@ -87,5 +87,7 @@ class UserModel extends Model {
     super.addListener(listener);
     _loadCurrentUser();
   }
+
+  static UserModel of(BuildContext context) => ScopedModel.of<UserModel>(context);
 }
 

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:lojavirtual/datas/cart_product.dart';
 import 'package:lojavirtual/models/user_model.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -26,4 +27,6 @@ class CartModel extends Model {
     products.remove(cartProduct);
     notifyListeners();
   }
+
+  static CartModel of(BuildContext context) => ScopedModel.of<CartModel>(context);
 }
