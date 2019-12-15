@@ -33,11 +33,15 @@ class UserModel extends Model {
 
   }
 
-  void recoverPass() {
+  void signOut() async {
+    await _auth.signOut();
+    userData = Map();
+    firebaseUser = null;
 
+    notifyListeners();
   }
 
-  bool isLoggedIn() {
+  void recoverPass() {
 
   }
 
@@ -46,5 +50,8 @@ class UserModel extends Model {
     await Firestore.instance.collection("users").document(firebaseUser.uid).setData(userData);
   }
 
+  bool isLoggedIn() {
+    return firebaseUser != null;
+  }
 }
 
