@@ -9,6 +9,9 @@ class CartModel extends Model {
   UserModel user;
 
   List<CartProduct> products = [];
+  String couponCode;
+  int discountPercentage = 0;
+
   bool isLoading = false;
 
   CartModel(this.user){
@@ -53,6 +56,11 @@ class CartModel extends Model {
         .collection("cart").getDocuments();
     products = query.documentChanges.map((doc) => CartProduct.fromDocument(doc.document)).toList();
     notifyListeners();
+  }
+
+  void setCoupon(String couponCode, int discountPercentage) {
+    this.couponCode = couponCode;
+    this.discountPercentage = discountPercentage;
   }
 
   static CartModel of(BuildContext context) => ScopedModel.of<CartModel>(context);
